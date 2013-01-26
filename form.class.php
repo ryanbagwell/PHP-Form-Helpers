@@ -1,5 +1,7 @@
 <?php
-
+/*
+ * An field base class
+ */
 class FormField {
 	public $classes = array();
 	public $required = false;
@@ -44,7 +46,9 @@ class FormField {
 	}
 
 }
-
+/*
+ * A simple text field
+ */
 class TextField extends FormField {
 	public $type = "text";
 
@@ -69,6 +73,9 @@ class TextField extends FormField {
 	
 }
 
+/*
+ * A password field
+ */
 class PasswordField extends TextField {
 	public $type = "password";
 
@@ -78,6 +85,10 @@ class PasswordField extends TextField {
 	
 }
 
+
+/*
+ * An email field
+ */
 class EmailField extends TextField {
 	public $type = "text";
 
@@ -95,6 +106,10 @@ class EmailField extends TextField {
 	
 }
 
+
+/*
+ * A credit card field
+ */
 class CreditCardField extends TextField {
 	public $type = "password";
 
@@ -117,6 +132,10 @@ class CreditCardField extends TextField {
 	
 }
 
+
+/*
+ * A generic select field
+ */
 class SelectField extends FormField {
 	public $choices = array();
 	private $type = "select";
@@ -171,7 +190,10 @@ class SelectField extends FormField {
 
 }
 
-
+/*
+ * Produces a select element that allows you to 
+ * select a U.S. State.
+ */
 class USStateField extends SelectField {
 	
     public $choices = array('AL'=>"Alabama",
@@ -242,6 +264,10 @@ class USStateField extends SelectField {
 	
 }
 
+/*
+ * Produces a select element that allows you to 
+ * select a month
+ */
 class MonthField extends SelectField {
 	
     public $choices = array(
@@ -268,7 +294,9 @@ class MonthField extends SelectField {
 	
 }
 
-
+/*
+ * A select element that provides a year selection
+ */
 class CreditCardYearField extends SelectField {
     public $choices = array();
 	public $num_choices = 10;
@@ -277,7 +305,7 @@ class CreditCardYearField extends SelectField {
 		
 		$this->set_years();
 		
-		parent::__construct($name,$label,$attrs,$required);
+		parent::__construct($name, $label, $attrs, $required);
 		
 	}
 	
@@ -295,6 +323,10 @@ class CreditCardYearField extends SelectField {
 	
 }
 
+/*
+ * A select element that provides a list of
+ * popular credit cards
+ */
 class CreditCardTypeField extends SelectField {
 	
     public $choices = array(
