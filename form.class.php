@@ -4,7 +4,7 @@ class FormField {
 	public $classes = array();
 	public $required = false;
 	
-	function FormField($name,$label,$attrs = array(),$required = false) {
+	function FormField($name, $label, $attrs = array(), $required = false) {
 		$this->name = $name;
 		$this->label = $label;
 		$this->attrs = $attrs;
@@ -18,6 +18,17 @@ class FormField {
 			
 		if ( $_POST && !$this->is_valid() )
 			$this->classes[] = 'invalid';
+			
+		$default_fields = array(
+			'title' => $label,
+			'id' => strtolower(str_replace(' ','-',$label)),
+			'type' => $this->type,
+			'name' => $name,
+			'value' => ( $_POST ) ? $_POST[ $name ] : '',
+			'class' => implode( ' ' , $this->classes ),
+		);
+		
+		$this->attrs = array_merge($default_fields, $attrs);
 		
 	}
 	
@@ -37,24 +48,13 @@ class FormField {
 class TextField extends FormField {
 	public $type = "text";
 
-	function TextField($name,$label,$attrs = array(), $required = false) {
+	function TextField($name, $label, $attrs = array(), $required = false) {
 		
-		parent::__construct($name,$label,$attrs,$required);
-		
-		$defaults = array(
-			'title' => $label,
-			'id' => strtolower(str_replace(' ','-',$label)),
-			'type' => $this->type,
-			'name' => $name,
-			'value' => ( $_POST ) ? $_POST[ $name ] : '',
-			'class' => implode( ' ' , $this->classes ),
-		);
-
-		$attrs = array_merge($defaults, $attrs);
+		parent::__construct($name, $label, $attrs, $required);
 
 		$html = "";
 
-		foreach($attrs as $key => $value) {
+		foreach($this->attrs as $key => $value) {
 			$html .= "$key='$value'"; 
 		}
 
@@ -72,8 +72,8 @@ class TextField extends FormField {
 class PasswordField extends TextField {
 	public $type = "password";
 
-	function PasswordField($name,$label,$attrs = array(), $required = false) {
-		return parent::__construct($name,$label,$attrs,$required);
+	function PasswordField($name, $label, $attrs = array(), $required = false) {
+		return parent::__construct($name, $label, $attrs, $required);
 	}
 	
 }
@@ -81,8 +81,8 @@ class PasswordField extends TextField {
 class EmailField extends TextField {
 	public $type = "text";
 
-	function EmailField($name,$label,$attrs = array(),$required) {
-		parent::__construct($name,$label,$attrs,$required);
+	function EmailField($name, $label, $attrs = array(), $required) {
+		parent::__construct($name, $label, $attrs, $required);
 
 		return $this;	
 	}
@@ -98,12 +98,12 @@ class EmailField extends TextField {
 class CreditCardField extends TextField {
 	public $type = "password";
 
-	function CreditCardField($name,$label,$attrs = array(),$required) {
+	function CreditCardField($name, $label, $attrs = array(), $required) {
 		$this->name = $name;
 
-		$attrs = array_merge(array('maxlength' => '16'),$attrs);
+		$attrs = array_merge(array('maxlength' => '16'), $attrs);
 
-		parent::__construct($name,$label,$attrs,$required);
+		parent::__construct($name, $label, $attrs, $required);
 
 		return $this;
 		
@@ -138,7 +138,7 @@ class SelectField extends FormField {
 
 		$attrs = array_merge($defaults, $attrs);
 
-		foreach($attrs as $key => $value ) {
+		foreach($this->attrs as $key => $value ) {
 			$this->html .= "$key='$value'"; 
 		}
 
@@ -227,7 +227,7 @@ class USStateField extends SelectField {
                     'WY'=>"Wyoming");
 
 	function USStateField($name, $label, $attrs = array(), $required = false) {
-		parent::__construct($name,$label,$attrs,$required);
+		parent::__construct($name, $label, $attrs, $required);
 	}
 
 	
@@ -262,7 +262,7 @@ class MonthField extends SelectField {
 
 	function MonthField($name, $label, $attrs = array(), $required = false) {
 		
-		parent::__construct($name,$label,$attrs,$required);
+		parent::__construct($name, $label, $attrs, $required);
 		
 	}
 	
