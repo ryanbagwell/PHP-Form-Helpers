@@ -26,7 +26,7 @@ class FormField {
 			'id' => strtolower(str_replace(' ','-',$label)),
 			'type' => $this->type,
 			'name' => $name,
-			'value' => ( $_POST ) ? $_POST[ $name ] : '',
+			'value' => ( array_key_exists($name, $_POST) ) ? $_POST[ $name ] : '',
 			'class' => implode( ' ' , $this->classes ),
 		);
 		
